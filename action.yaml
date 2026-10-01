@@ -750,10 +750,10 @@ runs:
           "https://actions.enforce.dev/actions/v1/record" >/dev/null 2>&1 || true
     - name: Checkout if required
       if: ${{ inputs.checkout == 'true' }}
-      uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      uses: chainguard-actions/actions-checkout@31bbccf724702f8a0dc7a3ed7db8fcca2066babc # v4
     - name: Deploy with BitOps
       id: deploy
-      uses: bitovi/github-actions-commons@734bf31e47290ed9dd3f84bf01d473bfaaf4eebd # v2.0.8
+      uses: chainguard-actions/bitovi-github-actions-commons@a95bcadd4edf4eba290aa7adfeb12ef3f927abd5 # v2.0.8
       with:
         # AWS Specific
         aws_access_key_id: ${{ inputs.aws_access_key_id }}
