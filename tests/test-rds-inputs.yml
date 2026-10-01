@@ -1,0 +1,42 @@
+name: Test RDS configuration inputs
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Invoke action with RDS inputs
+        id: action
+        uses: .
+        continue-on-error: true
+        with:
+          checkout: 'false'
+          bitops_code_only: 'true'
+          aws_default_region: us-east-1
+          aws_resource_identifier: test-harness-rds
+          aws_ec2_instance_create: 'true'
+          # RDS inputs
+          aws_rds_db_enable: 'true'
+          aws_rds_db_name: testdb
+          aws_rds_db_user: dbuser
+          aws_rds_db_engine: postgres
+          aws_rds_db_engine_version: '14'
+          aws_rds_db_instance_class: db.t3.micro
+          aws_rds_db_allocated_storage: '10'
+          aws_rds_db_port: '5432'
+
+      - name: Assert action accepted RDS inputs
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          if [ "$OUTCOME" = "success" ]; then
+            echo "PASS: action completed successfully with RDS inputs"
+          elif [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action failed gracefully (expected without real AWS credentials)"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi

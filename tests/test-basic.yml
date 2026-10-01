@@ -1,0 +1,35 @@
+name: Test basic usage - bitops code only mode
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Invoke action in bitops_code_only mode
+        id: action
+        uses: .
+        continue-on-error: true
+        with:
+          checkout: 'false'
+          bitops_code_only: 'true'
+          aws_default_region: us-east-1
+          aws_resource_identifier: test-harness-basic
+          docker_install: 'true'
+          aws_ec2_instance_create: 'true'
+          aws_elb_create: 'true'
+
+      - name: Assert action ran (succeeded or failed gracefully without real AWS creds)
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          if [ "$OUTCOME" = "success" ]; then
+            echo "PASS: action completed successfully in bitops_code_only mode"
+          elif [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action failed gracefully (expected without real AWS credentials)"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi

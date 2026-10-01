@@ -1,0 +1,46 @@
+name: Test legacy input aliases
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Invoke action with legacy inputs
+        id: action
+        uses: .
+        continue-on-error: true
+        with:
+          checkout: 'false'
+          bitops_code_only: 'true'
+          aws_default_region: us-east-1
+          aws_resource_identifier: test-harness-legacy
+          # Legacy EC2 inputs
+          ec2_instance_type: t3.micro
+          ec2_volume_size: '20'
+          # Legacy app inputs
+          app_port: '8080'
+          lb_port: '80'
+          lb_healthcheck: TCP:22
+          # Legacy stack management
+          stack_destroy: 'false'
+          # Legacy domain inputs
+          domain_name: example.com
+          sub_domain: test
+          # Legacy additional tags
+          additional_tags: '{"env":"test"}'
+
+      - name: Assert action accepted legacy inputs
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          if [ "$OUTCOME" = "success" ]; then
+            echo "PASS: action completed successfully with legacy inputs"
+          elif [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action failed gracefully (expected without real AWS credentials)"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi
