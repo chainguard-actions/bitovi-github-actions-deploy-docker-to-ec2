@@ -16,10 +16,10 @@ Action **bitovi--github-actions-deploy-docker-to-ec2/v1.0.3** was hardened autom
 
 ### unpinned-uses (severity: high)
 
-Two `uses:` references in action.yaml are pinned to mutable tags rather than immutable 40-character commit SHAs, making the action vulnerable to supply-chain attacks if the referenced tags are moved or overwritten:
-- `uses: actions/checkout@v4` (mutable tag `v4`)
-- `uses: bitovi/github-actions-commons@v2.0.8` (mutable version tag `v2.0.8`)
-These should be pinned to full SHA digests, e.g. `actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4`.
+Two `uses:` references in action.yaml are pinned to mutable version tags rather than immutable 40-character commit SHAs. This exposes the action to supply-chain attacks if the referenced tags are moved or the upstream repositories are compromised.
+
+1. `uses: actions/checkout@v4` — should be pinned to a full SHA, e.g. `actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4`
+2. `uses: bitovi/github-actions-commons@v2.0.8` — should be pinned to a full SHA, e.g. `bitovi/github-actions-commons@<40-char-sha> # v2.0.8`
 
 Locations:
 
@@ -34,8 +34,8 @@ Locations:
 
 **Notes:**
 
-Pinned two mutable tag references to immutable commit SHAs:
-- `actions/checkout@v4` → `actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4`
-- `bitovi/github-actions-commons@v2.0.8` → `bitovi/github-actions-commons@734bf31e47290ed9dd3f84bf01d473bfaaf4eebd # v2.0.8`
-SHAs were resolved using lookup_action_sha and the original tags are preserved as inline comments for readability.
+Pinned both unpinned action references in hardened/action/action.yaml:
+1. `actions/checkout@v4` → `actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4`
+2. `bitovi/github-actions-commons@v2.0.8` → `bitovi/github-actions-commons@734bf31e47290ed9dd3f84bf01d473bfaaf4eebd # v2.0.8`
+Both SHAs were resolved via lookup_action_sha. No other unpinned references were found.
 

@@ -1,4 +1,4 @@
-name: Test Environment File Inputs
+name: Test Ansible and Terraform State Inputs
 on:
   workflow_dispatch:
 jobs:
@@ -14,14 +14,24 @@ jobs:
           # AWS credentials (fake — will cause graceful failure)
           aws_access_key_id: fake-key-id
           aws_secret_access_key: fake-secret-key
+          aws_session_token: fake-session-token
+          aws_additional_tags: '{"test-tag": "test-value"}'
           aws_default_region: us-east-1
-          aws_resource_identifier: test-harness-env-inputs
+          aws_resource_identifier: test-harness-ansible-tf
 
-          # Environment file inputs
-          env_aws_secret: my-aws-secret-name
-          env_repo: .env
-          env_ghs: MY_GH_SECRET
-          env_ghv: MY_GH_VARIABLE
+          # Terraform state inputs
+          tf_state_file_name: test-state-file
+          tf_state_file_name_append: unique
+          tf_state_bucket: test-tf-state-bucket
+          tf_targets: module.ec2
+
+          # Ansible inputs
+          ansible_skip: 'true'
+          ansible_ssh_to_private_ip: 'false'
+          ansible_start_docker_timeout: '300'
+
+          # bitops_code_store
+          bitops_code_store: 'false'
 
           # Disable checkout since we already checked out
           checkout: 'false'
