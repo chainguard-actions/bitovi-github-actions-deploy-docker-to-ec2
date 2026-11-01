@@ -6,9 +6,9 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 
 ## Versions
 
-| Version | Tag | Upstream commit |
-|---------|-----|-----------------|
-| v1.0.3 | [`v1.0.3`](https://github.com/chainguard-actions/bitovi-github-actions-deploy-docker-to-ec2/tree/v1.0.3) | [`fa96354`](https://github.com/bitovi/github-actions-deploy-docker-to-ec2/commit/fa96354cf831d960451f41b8bc0e834e6e4b64b0) |
+| Version | Tag | Upstream commit | Hardening report |
+|---------|-----|-----------------|------------------|
+| v1.0.3 | [`v1.0.3`](https://github.com/chainguard-actions/bitovi-github-actions-deploy-docker-to-ec2/tree/v1.0.3) | [`fa96354`](https://github.com/bitovi/github-actions-deploy-docker-to-ec2/commit/fa96354cf831d960451f41b8bc0e834e6e4b64b0) | [`HARDENING.md`](https://github.com/chainguard-actions/bitovi-github-actions-deploy-docker-to-ec2/blob/v1.0.3/HARDENING.md) |
 
 ## Privacy
 
